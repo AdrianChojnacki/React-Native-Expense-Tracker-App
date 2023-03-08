@@ -3,6 +3,7 @@ import { View, StyleSheet, Text } from "react-native";
 import Input from "./Input";
 import Button from "../UI/Button";
 import { getFormattedDate } from "../../util/date";
+import { GlobalStyles } from "../../constants/styles";
 
 function ExpenseForm({ submitButtonLabel, onSubmit, onCancel, defaultValues }) {
   const [inputs, setInputs] = useState({
@@ -69,6 +70,7 @@ function ExpenseForm({ submitButtonLabel, onSubmit, onCancel, defaultValues }) {
         <Input
           style={styles.rowInput}
           label="Amount"
+          invalid={!inputs.amount.isValid}
           textInputConfig={{
             value: inputs.amount.value,
             onChangeText: inputChangedHandler.bind(this, "amount"),
@@ -78,6 +80,7 @@ function ExpenseForm({ submitButtonLabel, onSubmit, onCancel, defaultValues }) {
         <Input
           style={styles.rowInput}
           label="Date"
+          invalid={!inputs.date.isValid}
           textInputConfig={{
             value: inputs.date.value,
             onChangeText: inputChangedHandler.bind(this, "date"),
@@ -88,6 +91,7 @@ function ExpenseForm({ submitButtonLabel, onSubmit, onCancel, defaultValues }) {
       </View>
       <Input
         label="Description"
+        invalid={!inputs.description.isValid}
         textInputConfig={{
           value: inputs.description.value,
           onChangeText: inputChangedHandler.bind(this, "description"),
@@ -97,7 +101,9 @@ function ExpenseForm({ submitButtonLabel, onSubmit, onCancel, defaultValues }) {
         }}
       />
       {formIsInvalid && (
-        <Text>Invalid input values - please check your entered data!</Text>
+        <Text style={styles.errorText}>
+          Invalid input values - please check your entered data!
+        </Text>
       )}
       <View style={styles.buttons}>
         <Button style={styles.button} onPress={submitHandler}>
@@ -130,6 +136,11 @@ const styles = StyleSheet.create({
   },
   rowInput: {
     flex: 1,
+  },
+  errorText: {
+    margin: 8,
+    color: GlobalStyles.colors.error500,
+    textAlign: "center",
   },
   buttons: {
     flexDirection: "row",
